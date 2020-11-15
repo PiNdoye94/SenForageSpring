@@ -13,7 +13,7 @@
     </head>
     <body class="sb-nav-fixed">
         <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
-            <a class="navbar-brand" th:href="@{Accueil}">Sen-Forage</a>
+            <a class="navbar-brand" th:href="@{/}">Sen-Forage</a>
             <button class="btn btn-link btn-sm order-1 order-lg-0" id="sidebarToggle" href="#"><i class="fas fa-bars"></i></button>
             <!-- Navbar Search-->
             <form class="d-none d-md-inline-block form-inline ml-auto mr-0 mr-md-3 my-2 my-md-0">
@@ -43,7 +43,7 @@
                     <div class="sb-sidenav-menu">
                         <div class="nav">
                             <div class="sb-sidenav-menu-heading">Core</div>
-                            <a class="nav-link" th:href="@{Accueil}">
+                            <a class="nav-link" th:href="@{/}">
                                 <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
                                 Dashboard
                             </a>
@@ -95,7 +95,7 @@
                                 <div class="sb-nav-link-icon"><i class="fas fa-chart-area"></i></div>
                                 Charts
                             </a>
-                            <a class="nav-link" th:href="@{Clients}">
+                            <a class="nav-link" th:href="@{Table}">
                                 <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
                                 Tables
                             </a>
@@ -112,7 +112,7 @@
                     <div class="container-fluid">
                         <h1 class="mt-4">Tables</h1>
                         <ol class="breadcrumb mb-4">
-                            <li class="breadcrumb-item"><a th:href="@{Accueil}">Dashboard</a></li>
+                            <li class="breadcrumb-item"><a th:href="@{/}">Dashboard</a></li>
                             <li class="breadcrumb-item active">Tables</li>
                         </ol>
                         <div class="card mb-4">
@@ -135,7 +135,6 @@
                                                 <th>Nom</th>
                                                 <th>Prenom</th>
                                                 <th>Telephone</th>
-                                                <th>Adresse</th>
                                                 <th>Village</th>
                                             </tr>
                                         </thead>
@@ -144,19 +143,17 @@
                                                 <th>Nom</th>
                                                 <th>Prenom</th>
                                                 <th>Telephone</th>
-                                                <th>Adresse</th>
                                                 <th>Village</th>
                                             </tr>
                                         </tfoot>
                                         <tbody>
-                                            <tr>
-                                                <td>Ndoye</td>
-                                                <td>Papis</td>
-                                                <td>775923408</td>
-                                                <td>N°251</td>
-                                                <td>xxx</td>
+                                            <tr th:each="c:${slclient}">
+                                                <td th:text="${c.nom}"></td>
+                                                <td th:text="${c.prenom}"></td>
+                                                <td th:text="${c.telephone}"></td>
+                                                <td th:text="${c.village}"></td>
                                                 <div class="form-group mt-4 mb-0">
-                                                    <td><a class="btn btn-primary btn-block" th:href="@{#}">Update</a></td>
+                                                    <td><a class="btn btn-primary btn-block" th:href="@{'/edit/' + ${c.id}}">Edit</a></td>
                                                     <td><a class="btn btn-primary btn-block" th:href="@{#}">Delete</a></td>
                                                 </div>
                                             </tr>

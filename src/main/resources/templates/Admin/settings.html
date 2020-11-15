@@ -13,7 +13,7 @@
 </head>
 <body class="sb-nav-fixed">
 <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
-    <a class="navbar-brand" href="admin.html">Sen-Forage</a>
+    <a class="navbar-brand" th:href="@{/}">Sen-Forage</a>
     <button class="btn btn-link btn-sm order-1 order-lg-0" id="sidebarToggle" href="#"><i class="fas fa-bars"></i></button>
     <!-- Navbar Search-->
     <form class="d-none d-md-inline-block form-inline ml-auto mr-0 mr-md-3 my-2 my-md-0">
@@ -29,7 +29,7 @@
         <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" id="userDropdown" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-user fa-fw"></i></a>
             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
-                <a class="dropdown-item" href="#">Settings</a>
+                <a class="dropdown-item" th:href="@{Settings}">Settings</a>
                 <a class="dropdown-item" href="#">Activity Log</a>
                 <div class="dropdown-divider"></div>
                 <a class="dropdown-item" th:href="@{login.html}">Logout</a>
@@ -43,7 +43,7 @@
             <div class="sb-sidenav-menu">
                 <div class="nav">
                     <div class="sb-sidenav-menu-heading">Core</div>
-                    <a class="nav-link" th:href="@{Settings}">
+                    <a class="nav-link" th:href="@{/}">
                         <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
                         Dashboard
                     </a>
@@ -95,7 +95,7 @@
                         <div class="sb-nav-link-icon"><i class="fas fa-chart-area"></i></div>
                         Charts
                     </a>
-                    <a class="nav-link" th:href="@{Clients}">
+                    <a class="nav-link" th:href="@{Table}">
                         <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
                         Tables
                     </a>
@@ -120,16 +120,17 @@
                         <i class="fas fa-table mr-1"></i>
                         Nouveau Village de Sen-Forage
                     </div>
-                    <form action="#" method="POST" ><!--th:action="@{/Settings}" th:object="${villageform}" -->
+                    <form action="#" method="POST" th:action="@{/Settings/create}" th:object="${village}" >
                         <div class="form-row">
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label class="small mb-1" for="inputNomVillage">Nom Village</label>
-                                    <input class="form-control py-4" id="inputNomVillage" name="nomvillage" type="text" placeholder="Nom Village" />
+                                    <input class="form-control py-4"  id="inputNomVillage" name="nomVillage" type="text" placeholder="Nom Village"/>
                                 </div>
                             </div>
                         </div>
                         <div class="form-group mt-4 mb-0"><button type="submit" class="btn btn-primary btn-block">Ajouter Village</button></div>
+                        <div><input type="hidden" id="id" /></div>
                     </form>
                     <div class="card-body">
                         <div class="card-header">
@@ -153,12 +154,12 @@
                                 </tr>
                                 </tfoot>
                                 <tbody>
-                                <tr th:each="v:${newV}">
+                                <tr th:each="v:${villages}">
                                     <td th:text="${v.id}"></td>
                                     <td th:text="${v.nomVillage}"></td>
                                     <div class="form-group mt-4 mb-0">
-                                        <td><a class="btn btn-primary btn-block" th:href="@{#}">Update</a></td>
-                                        <td><a class="btn btn-primary btn-block" th:href="@{#}">Delete</a></td>
+                                        <td><a class="btn btn-primary btn-block" th:href="@{/Settings/{id}(id=${v.id})}">Edit</a></td>
+                                        <td><a class="btn btn-primary btn-block" th:href="@{/Settings/delete/{id}(id=${v.id})}">Delete</a></td>
                                     </div>
                                 </tr>
                                 </tbody>
@@ -171,44 +172,44 @@
                         <i class="fas fa-table mr-1"></i>
                         Nouveau Utilisateur de Sen-Forage
                     </div>
-                    <form>
+                    <form action="#" method="POST" th:action="@{/Settings/create/user}" th:object="${user}">
                         <div class="form-row">
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label class="small mb-1" for="inputFirstName">Nom</label>
-                                    <input class="form-control py-4" id="inputFirstName" type="text" placeholder="Nom" />
+                                    <input class="form-control py-4" id="inputFirstName" name="nom" type="text" placeholder="Nom" />
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label class="small mb-1" for="inputLastName">Prenom</label>
-                                    <input class="form-control py-4" id="inputLastName" type="text" placeholder="Prenom" />
+                                    <input class="form-control py-4" id="inputLastName" name="prenom" type="text" placeholder="Prenom" />
                                 </div>
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="small mb-1" for="inputTelephone">Telephone</label>
-                            <input class="form-control py-4" id="inputTelephone" type="text" aria-describedby="emailHelp" placeholder="Telephone" />
+                            <input class="form-control py-4" id="inputTelephone" name="telephone" type="text" aria-describedby="emailHelp" placeholder="Telephone" />
                         </div>
-                        <div class="form-group">
-                            <label class="small mb-1" for="inputEmailAddress">Email</label>
-                            <input class="form-control py-4" id="inputEmailAddress" type="email" aria-describedby="emailHelp" placeholder="Email" />
-                        </div>
+<!--                        <div class="form-group">-->
+<!--                            <label class="small mb-1" for="inputEmailAddress">Email</label>-->
+<!--                            <input class="form-control py-4" id="inputEmailAddress" type="email" aria-describedby="emailHelp" placeholder="Email" />-->
+<!--                        </div>-->
                         <div class="form-row">
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label class="small mb-1" for="inputUsername">UserName</label>
-                                    <input class="form-control py-4" id="inputUsername" type="text" placeholder="UserName" />
+                                    <input class="form-control py-4" id="inputUsername" name="username" type="text" placeholder="UserName" />
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label class="small mb-1" for="inputRole">Roles</label>
-                                    <input class="form-control py-4" id="inputRole" type="text" placeholder="role.." />
+                                    <input class="form-control py-4" id="inputRole" name="profils" type="text" placeholder="role.." />
                                 </div>
                             </div>
                         </div>
-                        <div class="form-group mt-4 mb-0"><a class="btn btn-primary btn-block" href="login.html">Ajouter</a></div>
+                        <div class="form-group mt-4 mb-0"><button type="submit" class="btn btn-primary btn-block">Ajouter utilisateur</button></div>
                     </form>
                     <div class="card-body">
                         <div class="card-header">
@@ -216,7 +217,7 @@
                             Liste Utilisateur Sen-Forage
                         </div>
                         <div class="table-responsive">
-                            <table class="table table-bordered table-striped" id="dataTable" width="100%" cellspacing="0">
+                            <table class="table table-bordered table-striped" id="dataTables" width="100%" cellspacing="0">
                                 <thead>
                                 <tr>
                                     <th>Nom</th>
@@ -236,14 +237,14 @@
                                 </tr>
                                 </tfoot>
                                 <tbody>
-                                <tr th:each="u:${newU}">
+                                <tr th:each="u:${users}">
                                     <td th:text="${u.nom}"></td>
                                     <td th:text="${u.prenom}"></td>
                                     <td th:text="${u.username}"></td>
                                     <td th:text="${u.profils}">ADMIN</td>
                                     <div class="form-group mt-4 mb-0">
-                                        <td><a class="btn btn-primary btn-block" th:href="@{#}">Update</a></td>
-                                        <td><a class="btn btn-primary btn-block" th:href="@{#}">Delete</a></td>
+                                        <td><a class="btn btn-primary btn-block" th:href="@{/Settings/{id}(id=${u.id})}">Update</a></td>
+                                        <td><a class="btn btn-primary btn-block" th:href="@{/Settings/delete/{id}(id=${u.id})}">Delete</a></td>
                                     </div>
                                 </tr>
                                 </tbody>
