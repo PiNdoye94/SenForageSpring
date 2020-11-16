@@ -15,11 +15,17 @@
 //import java.util.Optional;
 //
 //@Controller
-//@RequestMapping("/Settings/village")
 //public class UserController {
 //    @Autowired
 //    private VillageServices villageservice;
+//    @Autowired
+//    private UserServices userservice;
 //
+////
+////    @Autowired
+////    public SettingsController(VillageRepository villagedao) {
+////        this.villagedao = villagedao;
+////    }
 //
 //    @GetMapping("/Settings")
 //    public String getAll(Model model)

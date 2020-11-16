@@ -20,16 +20,18 @@ public class User implements Serializable {
     private String prenom;
     private String username;
     private String password;
-    @ManyToMany(
-            cascade=CascadeType.ALL,fetch=FetchType.EAGER
-    )
-    @JoinTable(name="users_profils",
-            joinColumns = {
-                    @JoinColumn(name="users", referencedColumnName="username")},
-            inverseJoinColumns = {
-                    @JoinColumn(name="profils", referencedColumnName="nomProfil")}
-    )
-    private List<Profil> profils = new ArrayList<>();
+    private String role;
+
+//    @ManyToMany(
+//            cascade=CascadeType.ALL,fetch=FetchType.EAGER
+//    )
+//    @JoinTable(name="users_profils",
+//            joinColumns = {
+//                    @JoinColumn(name="users", referencedColumnName="username")},
+//            inverseJoinColumns = {
+//                    @JoinColumn(name="profils", referencedColumnName="nomProfil")}
+//    )
+//    private List<Profil> profils = new ArrayList<>();
 
     public User() {
     }
@@ -74,20 +76,20 @@ public class User implements Serializable {
         this.password = password;
     }
 
-    public List<Profil> getProfils() {
-        return profils;
+    public String getRole() {
+        return role;
     }
 
-    public void setProfils(List<Profil> profils) {
-        this.profils = profils;
+    public void setRole(String role) {
+        this.role = role;
     }
 
-    public User(Long id, String nom, String prenom, String username, String password, List<Profil> profils) {
+    public User(Long id, String nom, String prenom, String username, String password, String role) {
         this.id = id;
         this.nom = nom;
         this.prenom = prenom;
         this.username = username;
         this.password = password;
-        this.profils = profils;
+        this.role = role;
     }
 }
