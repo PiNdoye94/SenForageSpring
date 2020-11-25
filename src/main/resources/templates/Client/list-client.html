@@ -13,7 +13,7 @@
     </head>
     <body class="sb-nav-fixed">
         <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
-            <a class="navbar-brand" th:href="@{/}">Sen-Forage</a>
+            <a class="navbar-brand" th:href="@{Accueil}">Sen-Forage</a>
             <button class="btn btn-link btn-sm order-1 order-lg-0" id="sidebarToggle" href="#"><i class="fas fa-bars"></i></button>
             <!-- Navbar Search-->
             <form class="d-none d-md-inline-block form-inline ml-auto mr-0 mr-md-3 my-2 my-md-0">
@@ -43,7 +43,7 @@
                     <div class="sb-sidenav-menu">
                         <div class="nav">
                             <div class="sb-sidenav-menu-heading">Core</div>
-                            <a class="nav-link" th:href="@{/}">
+                            <a class="nav-link" th:href="@{Accueil}">
                                 <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
                                 Dashboard
                             </a>
@@ -117,8 +117,8 @@
                         </ol>
                         <div class="card mb-4">
                             <div class="card-body">
-                                DataTables is a third party plugin that is used to generate the demo table below. For more information about DataTables, please visit the
-                                <a target="_blank" href="https://datatables.net/">official DataTables documentation</a>
+                                Cette table contient la liste de tous les clients et villages de l'entreprise Sen-Forage. Alors faites attention au risque de supprimer un client.
+                                <a target="_blank" href="https://datatables.net/">Info Administrateur</a>
                                 .
                             </div>
                         </div>
@@ -138,27 +138,25 @@
                                                 <th>Village</th>
                                             </tr>
                                         </thead>
-                                        <tfoot>
-                                            <tr>
-                                                <th>Nom</th>
-                                                <th>Prenom</th>
-                                                <th>Telephone</th>
-                                                <th>Village</th>
-                                            </tr>
-                                        </tfoot>
                                         <tbody>
-                                            <tr th:each="c:${slclient}">
+                                            <tr th:each="c:${tableClients}">
                                                 <td th:text="${c.nom}"></td>
                                                 <td th:text="${c.prenom}"></td>
                                                 <td th:text="${c.telephone}"></td>
-                                                <td th:text="${c.village}"></td>
+                                                <td th:text="${c.village.nomVillage}"></td>
                                                 <div class="form-group mt-4 mb-0">
                                                     <td><a class="btn btn-primary btn-block" th:href="@{'/edit/' + ${c.id}}">Edit</a></td>
-                                                    <td><a class="btn btn-primary btn-block" th:href="@{#}">Delete</a></td>
+                                                    <td><a th:onclick="return confirm('Vous etes sur le point de supprimer un client,\n etes-vous sùr?')" class="btn btn-danger btn-block" th:href="@{deleteClient(id=${c.id})}">Delete</a></td>
                                                 </div>
                                             </tr>
                                         </tbody>
                                     </table>
+                                    <ul class="nav nav-pills">
+                                        <li th:each="page,status:${pages}">
+                                            <a th:class="${status.index==currentPage?'btn btn-primary' : 'btn'}"
+                                               th:href="@{Table(page=${status.index}, size=${size})}" th:text="${status.index}"></a>
+                                        </li>
+                                    </ul>
                                 </div>
                             </div>
                         </div>

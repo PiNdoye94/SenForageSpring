@@ -2,9 +2,14 @@ package sn.senforage.senforagespring.controller;
 
 import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import sn.senforage.senforagespring.dao.UserRepository;
+import sn.senforage.senforagespring.dao.VillageRepository;
+import sn.senforage.senforagespring.entities.Client;
 import sn.senforage.senforagespring.entities.User;
 import sn.senforage.senforagespring.entities.Village;
 import sn.senforage.senforagespring.services.UserServices;
@@ -15,18 +20,25 @@ import java.util.Optional;
 @Controller
 public class SettingController {
     @Autowired
-    private VillageServices villageservice;
+    private VillageRepository villageRepository;
     @Autowired
-    private UserServices userservice;
+    private UserRepository userRepository;
 
 
-    @GetMapping("/Settings")
-    public String getAll(Model model)
+    @GetMapping(path = "/Settings")
+    public String getAll(Model model,
+                         @RequestParam(name = "page", defaultValue = "0") int page,
+                         @RequestParam(name="size", defaultValue = "5") int size)
     {
-        List<Village> listVillage = villageservice.getAllVillages();
-        List<User> listUser = userservice.getAllUsers();
-        model.addAttribute("villages", listVillage);
-        model.addAttribute("users", listUser);
+        Page<Village> pageVillage = villageRepository.findAll(PageRequest.of(page,size));
+        Page<User> pageUser = userRepository.findAll(PageRequest.of(page,size));
+        model.addAttribute("village", new Village());
+        model.addAttribute("user", new User());
+        model.addAttribute("lvillages", pageVillage.getContent());
+        model.addAttribute("lusers", pageUser.getContent());
+        model.addAttribute("pages", new int[pageVillage.getTotalPages()]);
+        model.addAttribute("pages", new int[pageUser.getTotalPages()]);
+        model.addAttribute("currentPage", page);
         return "Settings/list-village-user";
     }
 
@@ -56,11 +68,11 @@ public class SettingController {
         return "Settings/add-edit-user";
     }
 
-    @PostMapping(path = "/Settings/create")
+    @PostMapping(value = "/Settings/create")
     public String createOrUpdateVillage(Village village, User user)
     {
-        villageservice.createOrUpdateVillage(village);
-        userservice.createOrUpdateUser(user);
+        villageRepository.save(village);
+        userRepository.save(user);
         return "redirect:/Settings";
     }
 
@@ -68,8 +80,8 @@ public class SettingController {
     public String deleteById(Model model, @PathVariable("id") Long id)
             throws NotFoundException
     {
-        villageservice.deleteVillageById(id);
-        userservice.deleteUserById(id);
+        villageRepository.deleteById(id);
+        userRepository.deleteById(id);
         return "redirect:/Settings";
     }
 
